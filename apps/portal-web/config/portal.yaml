@@ -83,6 +83,7 @@ shell: true
 #     # openInNewPage: true
 #     children: []
 
-uiExtension:
-  - name: test测试
-    url: http://localhost:16566
+uiExtensionSimple:
+  - name: 视频教程
+    url: /user_tutorial.html
+    icon: /user_tutorial.svg
