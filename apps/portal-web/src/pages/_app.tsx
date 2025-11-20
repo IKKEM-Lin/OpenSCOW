@@ -174,7 +174,7 @@ function MyApp({ Component, pageProps, extra }: Props) {
   const loginNodeStore = useConstant(() => createStore(LoginNodeStore, loginNodes,
     extra.initialLanguage));
 
-  const uiExtensionStore = useConstant(() => createStore(UiExtensionStore, publicConfig.UI_EXTENSION));
+  const uiExtensionStore = useConstant(() => createStore(UiExtensionStore, publicConfig.UI_EXTENSION, publicConfig.UI_EXTENSION_SIMPLE));
 
   // Use the layout defined at the page level, if available
   return (

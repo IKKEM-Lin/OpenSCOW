@@ -92,6 +92,8 @@ export interface PublicRuntimeConfig {
   SYSTEM_LANGUAGE_CONFIG: SystemLanguageConfig;
 
   UI_EXTENSION?: UiExtensionConfigSchema;
+
+  UI_EXTENSION_SIMPLE?: Array<{ url: string; name: string; icon?: string; }>;
 }
 
 export const runtimeConfig: ServerRuntimeConfig = getConfig().serverRuntimeConfig;

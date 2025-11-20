@@ -190,6 +190,7 @@ const buildRuntimeConfig = async (phase, basePath) => {
     SYSTEM_LANGUAGE_CONFIG: systemLanguageConfig,
 
     UI_EXTENSION: portalConfig.uiExtension,
+    UI_EXTENSION_SIMPLE: portalConfig.uiExtensionSimple,
   };
 
   if (!building && !testenv) {

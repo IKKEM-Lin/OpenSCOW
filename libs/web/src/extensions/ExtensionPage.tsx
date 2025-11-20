@@ -87,7 +87,7 @@ export const ExtensionPage: React.FC<Props> = ({
     ...extensionQuery,
   });
 
-  const url = joinWithUrl(config.url, "extensions", ...pathParts)
+  const url = joinWithUrl(config.url, config.linkWithoutApi ? "" :"extensions", ...pathParts)
     + "?" + query.toString();
 
   const ref = useRef<HTMLIFrameElement>(null);

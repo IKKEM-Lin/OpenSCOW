@@ -24,14 +24,34 @@ export interface ExtensionManifestWithUrl {
   url: string;
   manifests: ExtensionManifestsSchema;
   name?: string;
+  iconPath?: string 
+  linkWithoutApi?: boolean;
 }
 
-export const UiExtensionStore = (uiExtensionConfig?: UiExtensionConfigSchema) => {
+export const UiExtensionStore = (uiExtensionConfig?: UiExtensionConfigSchema, uiExtensionSimpleConfig?: Array<{ url: string; name: string; icon?: string }>) => {
 
   const { data, isLoading } = useAsync({
     promiseFn: useCallback(async (): Promise<UiExtensionStoreData> => {
-
-      if (!uiExtensionConfig) { return undefined; }
+      if (!uiExtensionConfig) {
+        if (uiExtensionSimpleConfig) {
+          const tempData = uiExtensionSimpleConfig.map(item => ({
+            url: item.url,
+            name: item.name,
+            iconPath: item.icon,
+            linkWithoutApi: true,
+            manifests: {
+              portal: {
+                rewriteNavigations: true,
+                navbarLinks: {
+                  enabled: false,
+                },
+              },
+            }
+          }))
+          return Promise.resolve(tempData)
+        }
+        return undefined; 
+      }
 
       if (Array.isArray(uiExtensionConfig)) {
         return (await Promise.all(uiExtensionConfig.map(async (config) => {

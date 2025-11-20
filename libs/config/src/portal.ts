@@ -80,6 +80,12 @@ export const PortalConfigSchema = Type.Object({
 
   uiExtension: Type.Optional(UiExtensionConfigSchema),
 
+  uiExtensionSimple: Type.Optional(Type.Array(Type.Object({
+    name: Type.String(),
+    url: Type.String(),
+    icon: Type.Optional(Type.String()),
+  }))),
+
 });
 
 const PORTAL_CONFIG_NAME = "portal";

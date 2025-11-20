@@ -27,6 +27,7 @@ import { Header, HeaderNavbarLink } from "src/layouts/base/header";
 import { SideNav } from "src/layouts/base/SideNav";
 import { NavItemProps, UserInfo, UserLink } from "src/layouts/base/types";
 import { useDarkMode } from "src/layouts/darkMode";
+import { NavIcon } from "src/layouts/icon";
 import { styled } from "styled-components";
 // import logo from "src/assets/logo-no-text.svg";
 const { useBreakpoint } = Grid;
@@ -106,6 +107,15 @@ export const BaseLayout: React.FC<PropsWithChildren<Props>> = ({
       for (const extension of extensions) {
         if (!extension.manifests[from]?.rewriteNavigations) { continue; }
 
+        if (extension.linkWithoutApi) {
+          newRoutes = newRoutes.concat([{
+            path: `/extensions/${extension.name}`,
+            clickToPath: `/extensions/${extension.name}`,
+            text: extension.name || "",
+            Icon: extension.iconPath ? <NavIcon src={extension.iconPath} alt={extension.name} /> : <></>
+          }])
+          continue
+        }
         const resp = await callExtensionRoute(rewriteNavigationsRoute(from), routeQuery, {
           navs: fromNavItemProps(newRoutes),
         }, extension.url).catch((e) => {
