@@ -88,7 +88,7 @@ export const searchOne = async <T>(
       });
 
       res.on("end", (result) => {
-        logger.info("Received end event. %o", result);
+        logger.info("Received end event. %o", result || {});
         if (result?.status === 0) {
           resolve(undefined);
         } else {

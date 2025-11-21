@@ -37,7 +37,7 @@ const ValidationError = createError("BAD_REQUEST", "Errors occurred when validat
 export function buildApp(pluginOverrides?: PluginOverrides) {
 
   const server = fastify({
-    logger: logger as FastifyBaseLogger,
+    logger: (logger as any) as FastifyBaseLogger,
     ajv: {
       customOptions: {
         coerceTypes: "array",
