@@ -1,4 +1,4 @@
-name: Test, Build and Publish Projects
+name: Local-build
 
 on:
   workflow_dispatch:
@@ -44,7 +44,7 @@ jobs:
         run: bash build-scow.sh
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5.0.0
         with:
           name: scow-dist
           path: scow-dist.tgz
