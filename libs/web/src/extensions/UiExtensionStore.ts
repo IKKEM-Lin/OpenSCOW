@@ -13,28 +13,39 @@
 import { UiExtensionConfigSchema } from "@scow/config/build/uiExtensions";
 import { useCallback } from "react";
 import { useAsync } from "react-async";
-import { ExtensionManifestsSchema, fetchExtensionManifests } from "src/extensions/manifests";
+import {
+  ExtensionManifestsSchema,
+  fetchExtensionManifests,
+} from "src/extensions/manifests";
 
-const fetchManifestsWithErrorHandling = (url: string, name?: string): Promise<ExtensionManifestWithUrl | undefined> =>
+const fetchManifestsWithErrorHandling = (
+  url: string,
+  name?: string
+): Promise<ExtensionManifestWithUrl | undefined> =>
   fetchExtensionManifests(url)
     .then((x) => ({ url, manifests: x, name }))
-    .catch((e) => { console.error(`Error fetching extension manifests. ${e}`); return undefined; });
+    .catch((e) => {
+      console.error(`Error fetching extension manifests. ${e}`);
+      return undefined;
+    });
 
 export interface ExtensionManifestWithUrl {
   url: string;
   manifests: ExtensionManifestsSchema;
   name?: string;
-  iconPath?: string 
+  iconPath?: string;
   linkWithoutApi?: boolean;
 }
 
-export const UiExtensionStore = (uiExtensionConfig?: UiExtensionConfigSchema, uiExtensionSimpleConfig?: Array<{ url: string; name: string; icon?: string }>) => {
-
+export const UiExtensionStore = (
+  uiExtensionConfig?: UiExtensionConfigSchema,
+  uiExtensionSimpleConfig?: Array<{ url: string; name: string; icon?: string }>
+) => {
   const { data, isLoading } = useAsync({
     promiseFn: useCallback(async (): Promise<UiExtensionStoreData> => {
       if (!uiExtensionConfig) {
         if (uiExtensionSimpleConfig) {
-          const tempData = uiExtensionSimpleConfig.map(item => ({
+          const tempData = uiExtensionSimpleConfig.map((item) => ({
             url: item.url,
             name: item.name,
             iconPath: item.icon,
@@ -46,17 +57,24 @@ export const UiExtensionStore = (uiExtensionConfig?: UiExtensionConfigSchema, ui
                   enabled: false,
                 },
               },
-            }
-          }))
-          return Promise.resolve(tempData)
+            },
+          }));
+          return Promise.resolve(tempData);
         }
-        return undefined; 
+        return undefined;
       }
 
       if (Array.isArray(uiExtensionConfig)) {
-        return (await Promise.all(uiExtensionConfig.map(async (config) => {
-          return await fetchManifestsWithErrorHandling(config.url, config.name);
-        }).filter((x) => x))) as (ExtensionManifestWithUrl & { name: string })[];
+        return (await Promise.all(
+          uiExtensionConfig
+            .map(async (config) => {
+              return await fetchManifestsWithErrorHandling(
+                config.url,
+                config.name
+              );
+            })
+            .filter((x) => x)
+        )) as (ExtensionManifestWithUrl & { name: string })[];
       } else {
         return await fetchManifestsWithErrorHandling(uiExtensionConfig.url);
       }
@@ -66,4 +84,7 @@ export const UiExtensionStore = (uiExtensionConfig?: UiExtensionConfigSchema, ui
   return { data, isLoading };
 };
 
-export type UiExtensionStoreData = ExtensionManifestWithUrl | ExtensionManifestWithUrl[] | undefined;
+export type UiExtensionStoreData =
+  | ExtensionManifestWithUrl
+  | ExtensionManifestWithUrl[]
+  | undefined;

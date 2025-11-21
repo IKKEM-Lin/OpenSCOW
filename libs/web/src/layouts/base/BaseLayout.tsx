@@ -15,10 +15,19 @@
 import { arrayContainsElement } from "@scow/utils";
 import { Grid, Layout } from "antd";
 import { useRouter } from "next/router";
-import React, { PropsWithChildren, useCallback, useMemo, useState } from "react";
+import React, {
+  PropsWithChildren,
+  useCallback,
+  useMemo,
+  useState,
+} from "react";
 import { useAsync } from "react-async";
 import { getExtensionRouteQuery } from "src/extensions/common";
-import { fromNavItemProps, rewriteNavigationsRoute, toNavItemProps } from "src/extensions/navigations";
+import {
+  fromNavItemProps,
+  rewriteNavigationsRoute,
+  toNavItemProps,
+} from "src/extensions/navigations";
 import { callExtensionRoute } from "src/extensions/routes";
 import { UiExtensionStoreData } from "src/extensions/UiExtensionStore";
 import { calcActiveKeys } from "src/layouts/base/common";
@@ -44,7 +53,6 @@ const ContentPart = styled.div`
   flex-direction: column;
   width: 100%;
   overflow: hidden;
-
 `;
 
 const Content = styled(Layout.Content)`
@@ -68,15 +76,25 @@ type Props = PropsWithChildren<{
   headerRightContent?: React.ReactNode;
   basePath: string;
   userLinks?: UserLink[];
-  languageId: string,
+  languageId: string;
   from: "portal" | "mis";
   extensionStoreData?: UiExtensionStoreData;
 }>;
 
 export const BaseLayout: React.FC<PropsWithChildren<Props>> = ({
-  children, footerText, versionTag, routes, user, logout,
-  headerNavbarLinks, basePath, userLinks, languageId,
-  extensionStoreData, from, headerRightContent,
+  children,
+  footerText,
+  versionTag,
+  routes,
+  user,
+  logout,
+  headerNavbarLinks,
+  basePath,
+  userLinks,
+  languageId,
+  extensionStoreData,
+  from,
+  headerRightContent,
 }) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
 
@@ -86,40 +104,64 @@ export const BaseLayout: React.FC<PropsWithChildren<Props>> = ({
 
   const dark = useDarkMode();
 
-  const extensions = useMemo(() =>
-    (Array.isArray(extensionStoreData)
-      ? extensionStoreData
-      : extensionStoreData ? [extensionStoreData] : []).filter((x) => x),
-  [extensionStoreData]);
+  const extensions = useMemo(
+    () =>
+      (Array.isArray(extensionStoreData)
+        ? extensionStoreData
+        : extensionStoreData
+        ? [extensionStoreData]
+        : []
+      ).filter((x) => x),
+    [extensionStoreData]
+  );
 
-  const routeQuery = useMemo(() => getExtensionRouteQuery(
-    dark.dark,
-    languageId,
-    user?.token,
-  ), [dark.dark, languageId, user?.token]);
+  const routeQuery = useMemo(
+    () => getExtensionRouteQuery(dark.dark, languageId, user?.token),
+    [dark.dark, languageId, user?.token]
+  );
 
   const { data: finalRoutesData } = useAsync({
     promiseFn: useCallback(async () => {
-      if (extensions.length === 0) { return routes; }
+      if (extensions.length === 0) {
+        return routes;
+      }
 
       let newRoutes = routes;
 
       for (const extension of extensions) {
-        if (!extension.manifests[from]?.rewriteNavigations) { continue; }
+        if (!extension.manifests[from]?.rewriteNavigations) {
+          continue;
+        }
 
         if (extension.linkWithoutApi) {
-          newRoutes = newRoutes.concat([{
-            path: `/extensions/${extension.name}`,
-            clickToPath: `/extensions/${extension.name}`,
-            text: extension.name || "",
-            Icon: extension.iconPath ? <NavIcon src={extension.iconPath} alt={extension.name} /> : <></>
-          }])
-          continue
+          newRoutes = newRoutes.concat([
+            {
+              path: `/extensions/${extension.name}`,
+              clickToPath: `/extensions/${extension.name}`,
+              text: extension.name || "",
+              Icon: extension.iconPath ? (
+                <NavIcon src={extension.iconPath} alt={extension.name} />
+              ) : (
+                <></>
+              ),
+            },
+          ]);
+          continue;
         }
-        const resp = await callExtensionRoute(rewriteNavigationsRoute(from), routeQuery, {
-          navs: fromNavItemProps(newRoutes),
-        }, extension.url).catch((e) => {
-          console.warn(`Failed to call rewriteNavigations of extension ${extension.name ?? extension.url}. Error: `, e);
+        const resp = await callExtensionRoute(
+          rewriteNavigationsRoute(from),
+          routeQuery,
+          {
+            navs: fromNavItemProps(newRoutes),
+          },
+          extension.url
+        ).catch((e) => {
+          console.warn(
+            `Failed to call rewriteNavigations of extension ${
+              extension.name ?? extension.url
+            }. Error: `,
+            e
+          );
           return { 200: { navs: newRoutes } };
         });
 
@@ -134,11 +176,10 @@ export const BaseLayout: React.FC<PropsWithChildren<Props>> = ({
 
   const finalRoutes = finalRoutesData ?? routes;
 
-  const activeKeys = useMemo(() =>
-    finalRoutes
-      ? [...calcActiveKeys(finalRoutes, router.asPath)]
-      : []
-  , [finalRoutes, router.asPath]);
+  const activeKeys = useMemo(
+    () => (finalRoutes ? [...calcActiveKeys(finalRoutes, router.asPath)] : []),
+    [finalRoutes, router.asPath]
+  );
 
   const firstLevelRoute = finalRoutes.find((x) => activeKeys.includes(x.path));
 
@@ -167,25 +208,20 @@ export const BaseLayout: React.FC<PropsWithChildren<Props>> = ({
         activeKeys={activeKeys}
       />
       <StyledLayout>
-        {
-          hasSidebar ? (
-            <SideNav
-              activeKeys={activeKeys}
-              pathname={router.asPath}
-              collapsed={sidebarCollapsed}
-              routes={sidebarRoutes}
-              setCollapsed={setSidebarCollapsed}
-            />
-          ) : undefined
-        }
+        {hasSidebar ? (
+          <SideNav
+            activeKeys={activeKeys}
+            pathname={router.asPath}
+            collapsed={sidebarCollapsed}
+            routes={sidebarRoutes}
+            setCollapsed={setSidebarCollapsed}
+          />
+        ) : undefined}
         <ContentPart>
-          <Content>
-            {children}
-          </Content>
+          <Content>{children}</Content>
           <Footer text={footerText} versionTag={versionTag} />
         </ContentPart>
       </StyledLayout>
     </Root>
   );
 };
-

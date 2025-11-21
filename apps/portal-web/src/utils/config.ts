@@ -93,7 +93,7 @@ export interface PublicRuntimeConfig {
 
   UI_EXTENSION?: UiExtensionConfigSchema;
 
-  UI_EXTENSION_SIMPLE?: Array<{ url: string; name: string; icon?: string; }>;
+  UI_EXTENSION_SIMPLE?: { url: string; name: string; icon?: string; }[];
 }
 
 export const runtimeConfig: ServerRuntimeConfig = getConfig().serverRuntimeConfig;
