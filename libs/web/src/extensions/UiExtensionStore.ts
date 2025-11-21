@@ -20,7 +20,7 @@ import {
 
 const fetchManifestsWithErrorHandling = (
   url: string,
-  name?: string
+  name?: string,
 ): Promise<ExtensionManifestWithUrl | undefined> =>
   fetchExtensionManifests(url)
     .then((x) => ({ url, manifests: x, name }))
@@ -39,7 +39,7 @@ export interface ExtensionManifestWithUrl {
 
 export const UiExtensionStore = (
   uiExtensionConfig?: UiExtensionConfigSchema,
-  uiExtensionSimpleConfig?: Array<{ url: string; name: string; icon?: string }>
+  uiExtensionSimpleConfig?: { url: string; name: string; icon?: string }[],
 ) => {
   const { data, isLoading } = useAsync({
     promiseFn: useCallback(async (): Promise<UiExtensionStoreData> => {
@@ -70,10 +70,10 @@ export const UiExtensionStore = (
             .map(async (config) => {
               return await fetchManifestsWithErrorHandling(
                 config.url,
-                config.name
+                config.name,
               );
             })
-            .filter((x) => x)
+            .filter((x) => x),
         )) as (ExtensionManifestWithUrl & { name: string })[];
       } else {
         return await fetchManifestsWithErrorHandling(uiExtensionConfig.url);

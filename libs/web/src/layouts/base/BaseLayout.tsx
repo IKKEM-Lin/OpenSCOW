@@ -109,15 +109,15 @@ export const BaseLayout: React.FC<PropsWithChildren<Props>> = ({
       (Array.isArray(extensionStoreData)
         ? extensionStoreData
         : extensionStoreData
-        ? [extensionStoreData]
-        : []
+          ? [extensionStoreData]
+          : []
       ).filter((x) => x),
-    [extensionStoreData]
+    [extensionStoreData],
   );
 
   const routeQuery = useMemo(
     () => getExtensionRouteQuery(dark.dark, languageId, user?.token),
-    [dark.dark, languageId, user?.token]
+    [dark.dark, languageId, user?.token],
   );
 
   const { data: finalRoutesData } = useAsync({
@@ -154,13 +154,13 @@ export const BaseLayout: React.FC<PropsWithChildren<Props>> = ({
           {
             navs: fromNavItemProps(newRoutes),
           },
-          extension.url
+          extension.url,
         ).catch((e) => {
           console.warn(
             `Failed to call rewriteNavigations of extension ${
               extension.name ?? extension.url
             }. Error: `,
-            e
+            e,
           );
           return { 200: { navs: newRoutes } };
         });
@@ -178,7 +178,7 @@ export const BaseLayout: React.FC<PropsWithChildren<Props>> = ({
 
   const activeKeys = useMemo(
     () => (finalRoutes ? [...calcActiveKeys(finalRoutes, router.asPath)] : []),
-    [finalRoutes, router.asPath]
+    [finalRoutes, router.asPath],
   );
 
   const firstLevelRoute = finalRoutes.find((x) => activeKeys.includes(x.path));
