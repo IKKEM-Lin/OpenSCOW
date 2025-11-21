@@ -153,6 +153,7 @@ procedure
         filter: {
           users: [userId], accounts: [],states: [],jobName:trainJobName,
         },
+        jobTypes: [],
       }).then((resp) => resp.jobs);
 
       if (existingJobName.length) {
@@ -221,6 +222,7 @@ procedure
           timeLimitMinutes: maxTime,
           workingDirectory: trainJobsDirectory,
           script: remoteEntryPath,
+          envVariables: [],
           // 对于AI模块，需要传递的额外参数
           // 第一个参数确定是创建应用or训练任务，
           // 第二个参数为创建应用时的appId

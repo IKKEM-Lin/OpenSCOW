@@ -12,7 +12,7 @@
 
 import { asyncClientCall } from "@ddadaal/tsgrpc-client";
 import { ServiceError } from "@ddadaal/tsgrpc-common";
-import { JobInfo } from "@scow/ai-scheduler-adapter-protos/build/protos/job";
+import { JobInfo, JobInfo_PodStatus } from "@scow/ai-scheduler-adapter-protos/build/protos/job";
 import { AppType } from "@scow/config/build/appForAi";
 import { getPlaceholderKeys } from "@scow/lib-config/build/parse";
 import { OperationResult, OperationType } from "@scow/lib-operation-log";
@@ -318,6 +318,7 @@ export const createAppSession = procedure
       filter: {
         users: [userId], accounts: [],states: [],jobName:appJobName,
       },
+      jobTypes: [],
     }).then((resp) => resp.jobs);
 
     if (existingJobName.length) {
@@ -502,6 +503,7 @@ export const createAppSession = procedure
         // 用户指定应用工作目录，如果不存在，则默认为用户的appJobsDirectory
         workingDirectory: workingDirectory ?? join(homeDir, appJobsDirectory),
         script: remoteEntryPath,
+        envVariables: [],
         // 对于AI模块，需要传递的额外参数
         // 第一个参数确定是创建应用or训练任务，
         // 第二个参数为创建应用时的appId
@@ -685,9 +687,19 @@ export const saveImage =
             message: "Can not find this running job",
           });
         }
+        
+        // 查找运行中的Pod
+        const runningPod = job.pods.find((pod) => pod.podStatus === JobInfo_PodStatus.RUNNING);
 
-        const nodeName = job.containerJobInfo?.nodeName;
-        const containerId = job.containerJobInfo?.containerId;
+        if (!runningPod) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "No running pod found for this job",
+          });
+        }
+
+        const nodeName = runningPod.nodeName;
+        const containerId = runningPod.containerId;
 
         if (!nodeName || !containerId) {
           throw new TRPCError({
@@ -790,6 +802,7 @@ export const listAppSessions =
             users: [userId], accounts: [],
             states: ["RUNNING", "PENDING", "FAILED", "TIMEOUT", "COMPLETED"],
           },
+          jobTypes: [],
         }).then((resp) => resp.jobs);
 
         const runningJobInfoMap = runningJobsInfo.reduce((prev, curr) => {
