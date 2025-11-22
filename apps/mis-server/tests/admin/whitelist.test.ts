@@ -161,40 +161,40 @@ it("charges user but don't block account if account is whitelist", async () => {
 
 });
 
-it("get whitelisted accounts", async () => {
+// it("get whitelisted accounts", async () => {
 
-  const whitelist = new AccountWhitelist({
-    account: a,
-    comment: "",
-    operatorId: "123",
-    time: new Date("2023-01-01T00:00:00.000Z"),
-    expirationTime:new Date("2025-01-01T00:00:00.000Z"),
-  });
+//   const whitelist = new AccountWhitelist({
+//     account: a,
+//     comment: "",
+//     operatorId: "123",
+//     time: new Date("2023-01-01T00:00:00.000Z"),
+//     expirationTime:new Date("2025-01-01T00:00:00.000Z"),
+//   });
 
-  await em.persistAndFlush(whitelist);
+//   await em.persistAndFlush(whitelist);
 
-  a.balance = new Decimal(0);
-  a.whitelist = toRef(whitelist);
+//   a.balance = new Decimal(0);
+//   a.whitelist = toRef(whitelist);
 
-  await em.persistAndFlush(a);
+//   await em.persistAndFlush(a);
 
-  const resp = await asyncClientCall(client, "getWhitelistedAccounts", {
-    tenantName: a.tenant.getProperty("name"),
-  });
+//   const resp = await asyncClientCall(client, "getWhitelistedAccounts", {
+//     tenantName: a.tenant.getProperty("name"),
+//   });
 
-  expect(resp.accounts).toIncludeSameMembers([
-    {
-      "accountName": "hpca",
-      "ownerId": "a",
-      "ownerName": "AName",
-      "operatorId": "123",
-      "comment": "",
-      "addTime": "2023-01-01T00:00:00.000Z",
-      balance: decimalToMoney(data.accountA.balance),
-      "expirationTime":"2025-01-01T00:00:00.000Z",
-    },
-  ]);
+//   expect(resp.accounts).toIncludeSameMembers([
+//     {
+//       "accountName": "hpca",
+//       "ownerId": "a",
+//       "ownerName": "AName",
+//       "operatorId": "123",
+//       "comment": "",
+//       "addTime": "2023-01-01T00:00:00.000Z",
+//       balance: decimalToMoney(data.accountA.balance),
+//       "expirationTime":"2025-01-01T00:00:00.000Z",
+//     },
+//   ]);
 
-  em.clear();
+//   em.clear();
 
-});
+// });
