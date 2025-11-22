@@ -388,6 +388,105 @@
             }
         }
 
+        /* Q&A Section Styles */
+        .qa-section {
+            margin: 3rem 0;
+        }
+
+        .qa-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        .qa-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(15, 23, 42, 0.1);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            position: relative;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body[data-theme="dark"] .qa-card {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .qa-header {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #0284c7 100%);
+            padding: 1.5rem;
+        }
+
+        body[data-theme="dark"] .qa-header {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #22d3ee 100%);
+        }
+
+        .qa-title {
+            color: white;
+            font-size: 1.3rem;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .qa-content {
+            padding: 1.5rem;
+        }
+
+        .qa-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.1);
+        }
+
+        body[data-theme="dark"] .qa-item {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .qa-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .qa-question {
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            margin: 0 0 0.75rem 0;
+            font-weight: 600;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .qa-question::before {
+            content: "Q: ";
+            color: var(--accent-color);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .qa-answer {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-left: 1.5rem;
+        }
+
+        .qa-answer ul {
+            padding-left: 1.5rem;
+            margin: 0.75rem 0;
+        }
+
+        .qa-answer ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .qa-answer p {
+            margin: 0.75rem 0;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .logo {
@@ -396,6 +495,18 @@
 
             .video-grid {
                 grid-template-columns: 1fr;
+            }
+            
+            .qa-container {
+                padding: 0 1rem;
+            }
+            
+            .qa-title {
+                font-size: 1.1rem;
+            }
+            
+            .qa-question {
+                font-size: 1rem;
             }
         }
     </style>
@@ -413,6 +524,158 @@
         <div id="video-grid" class="video-grid">
             <!-- Video cards will be injected here -->
         </div>
+        <!-- Q&A Section -->
+        <section class="qa-section">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h2 class="logo" style="font-size: 2rem; display: inline-block;">Q & A</h2>
+                <p class="subtitle">培训答疑问题解答</p>
+            </div>
+            
+            <div class="qa-container">
+                <div class="qa-card">
+                    <div class="qa-header">
+                        <h3 class="qa-title">提交作业等环节相关问题</h3>
+                    </div>
+                    <div class="qa-content">
+                        <div class="qa-item">
+                            <h4 class="qa-question">1、如何提交作业？</h4>
+                            <div class="qa-answer">
+                                <ul>
+                                    <li><strong>方法1：</strong>登录<strong>web</strong>页面 - 资源使用情况查看 - 作业提交：脚本编辑 - 资源申请 - 提交/命令行登录；</li>
+                                    <li><strong>方法2：</strong>登录节点通过<strong>sbatch或srun等方式</strong>进行提交，具体可以参考用户手册，里面有详细的步骤。</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="qa-item">
+                            <h4 class="qa-question">2、作业的运行时长有限制吗？</h4>
+                            <div class="qa-answer">
+                                <p>集群有配置<strong>qos策略</strong>，一般默认最长运行时长是两天，选择long策略是4天，管理员这边最多可以帮忙延长到7天，超过7天的作业一般就考虑开启软件的断点续算功能去计算。</p>
+                            </div>
+                        </div>
+                        <div class="qa-item">
+                            <h4 class="qa-question">3、如果作业需要的运行时长较长，该如何申请/处理呢？</h4>
+                            <div class="qa-answer">
+                                <p>运行时间调整的方法是在<strong>专属微信服务群</strong>内通过向管理员申请进行调整，如有运行时长超出7天的作业则更建议断点续传。</p>
+                            </div>
+                        </div>
+                        <div class="qa-item">
+                            <h4 class="qa-question">4、作业运行至一半账户欠费的话是否会停止运行呢？</h4>
+                            <div class="qa-answer">
+                                <p><strong>不会停止运行</strong>，会运行到该作业计算结束，但是账户会变成欠费状态，在该作业运行结束后<strong>无法继续提交新作业</strong>。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="qa-card">
+                    <div class="qa-header">
+                        <h3 class="qa-title">文件传输等相关问题</h3>
+                    </div>
+                    <div class="qa-content">
+                        <div class="qa-item">
+                            <h4 class="qa-question">1、怎么上传文件呢，尤其是一些大文件？</h4>
+                            <div class="qa-answer">
+                                <ul>
+                                    <li>可以在<strong>文件管理页面</strong>（文件上传、下载文件、新建目录等）进行传输；</li>
+                                    <li>大文件传输建议使用命令行，如rsync、scp等，较为稳定；</li>
+                                    <li>如有上tb的大文件传输，建议使用rsync进行传输，一方面可以显示进度，一方面支持断点重传。</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="qa-item">
+                            <h4 class="qa-question">2、有哪些高速传输的方法呢？是否可以通过网页传输？</h4>
+                            <div class="qa-answer">
+                                <p>高速传输可以使用rsync命令进行，无法使用网页传输，这是由于网页上传文件较慢，如需上传的文件体积小建议使用客户端传输，体积较大的文件需要高速传输建议使用rsync进行传输。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="qa-card">
+                    <div class="qa-header">
+                        <h3 class="qa-title">平台软件、计算资源等相关问题</h3>
+                    </div>
+                    <div class="qa-content">
+                        <div class="qa-item">
+                            <h4 class="qa-question">1、如何运行Module load软件呢？或者如何加载计算软件？</h4>
+                            <div class="qa-answer">
+                                <p>在脚本里添加Module load 软件即可，无需使用命令行，添加后自动加载所需要的环境及使用软件。</p>
+                            </div>
+                        </div>
+                        <div class="qa-item">
+                            <h4 class="qa-question">2、具有那些计算资源？</h4>
+                            <div class="qa-answer">
+                                <ul>
+                                    <li><strong>390个双路CPU计算节点</strong>（2*Intel 6338 Xeon CPU ，共64 CPU核心, 256 GB内存，240GB SSD硬盘）</li>
+                                    <li><strong>6个8卡GPU计算节点</strong>（2*Intel 8358 Xeon CPU，共64 CPU核心，1536 GB内存，8*Tesla A100 GPU）</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="qa-item">
+                            <h4 class="qa-question">3、是否有提供商业软件？集成软件如何查看呢？</h4>
+                            <div class="qa-answer">
+                                <p>关于商业软件智算平台只提供试用，有特殊计算需求的可协助安装至个人目录，但涉及相关的授权问题需要自行解决。</p>
+                                <p>平台提供的集成软件可以通过<strong>module avail</strong>查看，其他有需要的软件建议编译安装在个人目录下</p>
+                            </div>
+                        </div>
+                        <div class="qa-item">
+                            <h4 class="qa-question">4、如何查看cpu&gpu资源排队情况呢？</h4>
+                            <div class="qa-answer">
+                                <p>通过squeue命令查看，会显示作业信息和排队状态，<strong>R为运行状态，PD为排队状态</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="qa-card">
+                    <div class="qa-header">
+                        <h3 class="qa-title">账户、用户等相关问题</h3>
+                    </div>
+                    <div class="qa-content">
+                        <div class="qa-item">
+                            <h4 class="qa-question">1、如何管理账户？</h4>
+                            <div class="qa-answer">
+                                <p>登录<strong>web管理界面</strong>，在账户管理页面可以管理成员，如移出/添加，设置成员阈值。</p>
+                            </div>
+                        </div>
+                        <div class="qa-item">
+                            <h4 class="qa-question">2、账户及用户的关系是怎么样的呢？</h4>
+                            <div class="qa-answer">
+                                <p>账户和用户属于多对多，一个账户可以拥有多个用户，一个用户也可以关联多个账户，主要看该用户具体情况。</p>
+                            </div>
+                        </div>
+                        <div class="qa-item">
+                            <h4 class="qa-question">3、内外部账户之间的区别？</h4>
+                            <div class="qa-answer">
+                                <p>仅按照<strong>经费来源区分</strong>，在收费标准上有区别，服务和资源上无区别</p>
+                                <ul>
+                                    <li><strong>内部账户</strong>：经费直接由厦门大学或嘉庚创新实验室支付或划转至嘉庚智算中心；</li>
+                                    <li><strong>外部账户</strong>：除厦门大学或嘉庚创新实验室经费支付的其他方式</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="qa-item">
+                            <h4 class="qa-question">4、一个用户如果在多个账户下该如何计费呢？</h4>
+                            <div class="qa-answer">
+                                <p>新申请用户需要关联至已有账户下，如一名用户在多个账户下，须在提交作业时手动选择作业归属的账户，即通过<strong>-A 账户名称</strong> 参数指定。</p>
+                            </div>
+                        </div>
+                        <div class="qa-item">
+                            <h4 class="qa-question">5、用户&账户申请表该如何下载呢？</h4>
+                            <div class="qa-answer">
+                                <p>下载途径为用户手册 - 点击目录内"资料下载"。</p>
+                            </div>
+                        </div>
+                        <div class="qa-item">
+                            <h4 class="qa-question">6、开户流程是怎样的？开户成功是否有提示？</h4>
+                            <div class="qa-answer">
+                                <p>用户及账户均通过智算中心管理员开通，需提交账户申请表、用户申请表的<strong>扫描件</strong>发送至ikkemhpc@xmu.edu.cn，开通成功后会有邮件通知发送至申请表上预留的邮箱。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <div id="player-modal" class="modal hidden">
