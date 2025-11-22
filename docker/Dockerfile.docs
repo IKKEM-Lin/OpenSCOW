@@ -13,7 +13,9 @@ FROM node:iron-alpine@sha256:558a6416c5e0da2cb0f19bbc766f0a76825a7e76484bc211af0
 
 RUN apk update && apk add libc6-compat python3 make gcc g++ git
 
+RUN npm install -g corepack@latest
 RUN corepack enable
+RUN pnpm --version
 
 WORKDIR /app
 
