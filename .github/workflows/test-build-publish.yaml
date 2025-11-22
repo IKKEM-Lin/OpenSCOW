@@ -134,10 +134,6 @@ jobs:
             file: scow
             build_args: ""
 
-          - name: docs
-            file: docs
-            build_args: BASE_PATH=/OpenSCOW/
-
     steps:
       - uses: actions/checkout@v4
 
