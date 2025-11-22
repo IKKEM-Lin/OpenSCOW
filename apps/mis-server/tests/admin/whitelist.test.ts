@@ -174,9 +174,8 @@ it("get whitelisted accounts", async () => {
   await em.persistAndFlush(whitelist);
 
   a.balance = new Decimal(0);
-  a.whitelist = toRef(whitelist);
-
-  await em.flush();
+  a.whitelist = whitelist;
+  await em.persistAndFlush(a);
 
   const resp = await asyncClientCall(client, "getWhitelistedAccounts", {
     tenantName: a.tenant.getProperty("name"),
